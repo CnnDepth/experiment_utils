@@ -3,13 +3,14 @@ import numpy as np
 import os
 
 class LoggingCallback():
-    def __init__(self, save_dir):
+    def __init__(self, model, save_dir):
         self.save_dir = save_dir
         if not os.path.exists(self.save_dir):
             os.mkdir(self.save_dir)
         self.val_losses = []
         self.losses = []
         self.epoch = 0
+        self.model = model
     
     def clear_losses(self, epoch, logs):
         self.losses = []
@@ -19,7 +20,7 @@ class LoggingCallback():
         self.losses.append(logs['loss'])
 
     def save_loss_and_model(self, epoch, logs):
-        fcrn_model.save(os.path.join(self.save_dir, 'model_on_epoch' + str(self.epoch) + '.hdf5'))
+        self.model.save(os.path.join(self.save_dir, 'model_on_epoch' + str(self.epoch) + '.hdf5'))
         np.savetxt(os.path.join(self.save_dir, 'losses_on_epoch' + str(self.epoch) + '.txt'),
                    np.array(self.losses)
                   )

@@ -2,14 +2,13 @@ from keras.models import load_model
 from keras.utils import multi_gpu_model
 import os
 
-def train_model(model_file,
+def train_model(fcrn_model,
                 save_dir,
                 params_list,
                 callback,
                 rgbs_train, depths_train,
                 rgbs_val, depths_val):
     # initialize model and callback, create save_dir
-    fcrn_model = load_model(model_file)
     fcrn_model_gpu = multi_gpu_model(fcrn_model, gpus=2)
     if not os.path.exists(save_dir):
         os.mkdir(save_dir)
